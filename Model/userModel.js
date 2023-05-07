@@ -23,10 +23,13 @@ const userSchema = new Schema({
 
 // static signup method
 userSchema.statics.signup = async function (
-  lastName,
-  firstName,
+  nom,
+  prenom,
   email,
-  password
+  password,
+  isAdmin,
+  isDirection,
+  isScolarite
 ) {
   const exists = await this.findOne({ email });
   if (exists) {
@@ -35,10 +38,13 @@ userSchema.statics.signup = async function (
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
   const user = await this.create({
-    lastName,
-    firstName,
+    nom,
+    prenom,
     email,
-    password,
+    password: hash,
+    isAdmin,
+    isDirection,
+    isScolarite,
   });
   return user;
 };
